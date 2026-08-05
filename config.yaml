@@ -1,0 +1,151 @@
+# Matching is transparent and editable. Terms are case-insensitive substrings.
+request_delay_seconds: 1
+max_alerts_per_run: 10
+
+sources:
+  - name: SALTO European Training Calendar
+    allowed_domains: [salto-youth.net, saltonetwork.eu]
+    max_results: 20
+    queries:
+      - "(training OR seminar OR exchange OR youth worker)"
+      - "(Europe OR European OR Erasmus)"
+      - "(digital OR technology OR inclusion OR participation)"
+      - "(site:salto-youth.net/tools/european-training-calendar OR site:saltonetwork.eu/trainings)"
+
+  - name: EURAXESS
+    allowed_domains: [euraxess.ec.europa.eu]
+    max_results: 20
+    queries:
+      - "(training OR fellowship OR workshop OR project OR researcher OR PhD)"
+      - "(cybersecurity OR information technology OR artificial intelligence OR automation)"
+      - "site:euraxess.ec.europa.eu"
+
+  - name: European Youth Portal
+    allowed_domains: [youth.europa.eu]
+    max_results: 20
+    queries:
+      - "(training OR exchange OR project OR call OR opportunity)"
+      - "(youth worker OR youth organisation OR education OR digital)"
+      - "site:youth.europa.eu"
+
+  - name: EU Funding and Tenders
+    allowed_domains: [ec.europa.eu, commission.europa.eu]
+    max_results: 20
+    queries:
+      - "(call for proposals OR training OR short-term project OR fellowship)"
+      - "(cybersecurity OR artificial intelligence OR digital education OR automation)"
+      - "(site:ec.europa.eu/info/funding-tenders OR site:commission.europa.eu/funding-and-tenders)"
+
+criteria:
+  minimum_score: 9
+  # At least one audience/opportunity group and one topic group must match.
+  require_any_groups: [audience, opportunity_type, organisations]
+  require_topic_groups: [technical_topics, youth_education, research]
+
+  age:
+    reject_explicit_limits: true
+    no_limit_terms:
+      - no age limit
+      - no age restriction
+      - applicants of all ages
+      - regardless of age
+    exclude_patterns:
+      - "\\b(?:aged?|ages?)\\s+(?:between\\s+)?(?:18|21|25|30|35)\\s*(?:-|–|to)\\s*(?:25|30|35|40)\\b"
+      - "\\bunder\\s+(?:25|30|35|40)\\b"
+      - "\\bmaximum age\\s*(?:of|:)?\\s*(?:25|30|35|40)\\b"
+      - "\\bup to\\s+(?:25|30|35|40)\\s+years?\\s+old\\b"
+
+  exclude_terms:
+    - closed for applications
+    - applications are closed
+    - deadline has passed
+    - expired opportunity
+
+  groups:
+    audience:
+      weight: 4
+      terms:
+        - phd student
+        - doctoral student
+        - early-stage researcher
+        - early career researcher
+        - researcher
+        - youth worker
+        - youth professional
+        - youth leader
+        - trainer
+
+    organisations:
+      weight: 3
+      terms:
+        - youth organisation
+        - youth organization
+        - university
+        - education institute
+        - educational institution
+        - research institute
+        - research organisation
+        - research organization
+        - ngo
+
+    opportunity_type:
+      weight: 4
+      terms:
+        - short-term training
+        - training course
+        - workshop
+        - seminar
+        - exchange
+        - mobility
+        - fellowship
+        - short-term project
+        - call for interest
+        - call for participants
+        - study visit
+        - summer school
+        - winter school
+
+    technical_topics:
+      weight: 5
+      terms:
+        - cyber security
+        - cybersecurity
+        - information technology
+        - artificial intelligence
+        - machine learning
+        - workflow automation
+        - process automation
+        - digital transformation
+        - digital skills
+
+    youth_education:
+      weight: 4
+      terms:
+        - youth work
+        - youth participation
+        - youth advocacy
+        - youth organisation
+        - youth organization
+        - education
+        - training
+        - inclusive community
+        - participatory design
+
+    research:
+      weight: 4
+      terms:
+        - research
+        - researcher
+        - doctoral
+        - phd
+        - scientific
+        - innovation
+
+    geography:
+      weight: 2
+      terms:
+        - europe
+        - european
+        - eu member state
+        - erasmus+
+        - horizon europe
