@@ -1,0 +1,249 @@
+{
+  "watch_title": "Funded ICT Opportunity Watch",
+  "updated_at": "2026-09-08T13:45:00Z",
+  "source": "ChatGPT persistent eligibility/dedup ledger",
+  "opportunities": [
+    {
+      "host": "Citadel / Citadel Securities",
+      "program_family": "Conference Travel Grant",
+      "cycle": "NeurIPS 2026",
+      "title": "Citadel Conference Travel Grant for NeurIPS 2026",
+      "deadline": "2026-10-05",
+      "canonical_url": "https://www.citadel.com/careers/programs-and-events/conference-travel-grant/"
+    },
+    {
+      "host": "ACM PQQS / ACM SIGSAC",
+      "program_family": "PQQS Student Travel Grant",
+      "cycle": "PQQS 2026",
+      "title": "ACM PQQS 2026 Travel Grants for Students",
+      "deadline": "2026-10-12",
+      "canonical_url": "https://acm-pqqs.github.io/pqqs2026/participants/travel-grants.html"
+    },
+    {
+      "host": "ILIAD",
+      "program_family": "ILIAD Fellowship Applied Mathematics for AI Alignment",
+      "cycle": "Fall 2026 umbrella cycle",
+      "covered_cohorts": ["November 2026", "December 2026"],
+      "aliases": ["ILIAD Fellowship: Applied Mathematics for AI Alignment", "ILIAD Fellowship in Applied Mathematics for AI Alignment, Fall 2026", "ILIAD Fellowship, November and December 2026 Cohorts"],
+      "deadlines": ["2026-09-21", "2026-10-19"],
+      "canonical_url": "https://www.iliad.ac/fellowship"
+    },
+    {
+      "host": "Women in CyberSecurity (WiCyS)",
+      "program_family": "Conference Scholarship",
+      "cycle": "WiCyS 2027",
+      "title": "WiCyS 2027 Conference Scholarship",
+      "deadline": "2026-09-30",
+      "canonical_url": "https://www.wicys.org/events/wicys-2027/wicys-2027-scholarships/"
+    },
+    {
+      "host": "MATS Research",
+      "program_family": "MATS Residency Bridge Track",
+      "cycle": "Winter 2027 intake",
+      "title": "MATS Residency, Winter 2027 Intake, Bridge Track",
+      "deadline": "2026-10-31",
+      "canonical_url": "https://www.matsprogram.org/residency/apply"
+    },
+    {
+      "host": "ERA Fellowship",
+      "program_family": "ERA:AI Fellowship",
+      "cycle": "Winter 2027",
+      "title": "Cambridge ERA:AI Fellowship, Winter 2027",
+      "deadline": "2026-09-13",
+      "canonical_url": "https://erafellowship.org/fellowship"
+    },
+    {
+      "host": "Mercor",
+      "program_family": "APEX Research Fellowship",
+      "cycle": "2026",
+      "title": "Mercor Research Fellowship, APEX",
+      "deadline": "2026-09-26",
+      "canonical_url": "https://jobs.ashbyhq.com/mercor/a0a98be0-d856-4129-b500-c0a3e412ef01"
+    },
+    {
+      "host": "ACM CCS / ACM SIGSAC",
+      "program_family": "Student Conference Grant",
+      "cycle": "ACM CCS 2026",
+      "title": "ACM CCS 2026 Student Conference Grant",
+      "deadline": "2026-09-14",
+      "canonical_url": "https://www.sigsac.org/ccs/CCS2026/attending/conference-grants.html"
+    },
+    {
+      "host": "N2Women / ACM MobiCom",
+      "program_family": "Young Researcher Fellowship",
+      "cycle": "MobiCom 2026",
+      "title": "N2Women Young Researcher Fellowship Award, ACM MobiCom 2026",
+      "deadline": "2026-09-14",
+      "canonical_url": "https://www.sigmobile.org/mobicom/2026/n2women.html"
+    },
+    {
+      "host": "Federation of American Scientists (FAS)",
+      "program_family": "AI Safety Policy Entrepreneurship Fellowship",
+      "cycle": "2026-2027",
+      "title": "FAS AI Safety Policy Entrepreneurship Fellowship 2026-2027",
+      "deadline": "2026-09-07",
+      "canonical_url": "https://fas.org/career/ai-safety-pef/"
+    },
+    {
+      "host": "International Telecommunication Union (ITU-R)",
+      "program_family": "World Radiocommunication Seminar Fellowship",
+      "cycle": "WRS-26",
+      "title": "ITU World Radiocommunication Seminar 2026 (WRS-26) Fellowship",
+      "deadline": "2026-10-07",
+      "canonical_url": "https://www.itu.int/wrs-26/participation/fellowships"
+    },
+    {
+      "host": "NATO Defense College",
+      "program_family": "Resident Fellowship Programme - Partners Across the Globe",
+      "cycle": "2027",
+      "title": "NATO Defense College Resident Fellowship Programme 2027, Partners Across the Globe (PatG) Fellowship",
+      "deadline": "2026-09-30",
+      "canonical_url": "https://www.ndc.nato.int/research/opportunities/"
+    },
+    {
+      "host": "Digital Science",
+      "program_family": "Catalyst Grant",
+      "cycle": "2026 - Agentic Workflows You Can Trust",
+      "title": "Digital Science 2026 Catalyst Grant: Agentic Workflows You Can Trust",
+      "deadline": "2026-10-05",
+      "canonical_url": "https://www.digital-science.com/about-us/investment/catalyst-grant/"
+    },
+    {
+      "host": "LASR Labs / London Initiative for Safe AI",
+      "program_family": "LASR Labs",
+      "cycle": "Winter 2027",
+      "title": "London AI Safety Research (LASR) Labs, Winter 2027 Cohort",
+      "deadline": "2026-09-20",
+      "canonical_url": "https://www.lasrlabs.org/"
+    },
+    {
+      "host": "Open Technology Fund (OTF)",
+      "program_family": "Information Controls Research Program (ICRP)",
+      "cycle": "2026 application cycle",
+      "title": "Open Technology Fund Information Controls Research Program (ICRP) 2026",
+      "aliases": ["Information Controls Fellowship Program", "OTF ICRP 2026", "Information Controls Research Program 2026"],
+      "deadline": "2026-09-07T23:59:00+00:00",
+      "programme_dates": "3, 6, 9, or 12 months; earliest project start estimated 2027-03-01",
+      "location_format": "Host-organization based, potentially remote; host may be outside the United States",
+      "funding_stream": "ICRP contractual researcher stipend",
+      "funding": "USD 7,000/month stipend; up to USD 5,000 travel stipend and up to USD 5,000 equipment stipend depending on project and approval",
+      "canonical_url": "https://www.opentech.fund/research-2/icrp/",
+      "reported_at": "2026-09-07T13:58:00+02:00"
+    },
+    {
+      "host": "European Cybersecurity Competence Centre (ECCC)",
+      "program_family": "Independent Cybersecurity Experts for Digital Europe and Horizon Europe",
+      "cycle": "EU MFF 2021-2027 open expert pool",
+      "title": "ECCC seeks cybersecurity experts for major funding programmes",
+      "aliases": ["ECCC cybersecurity independent experts", "ECCC expert evaluator pool", "Cybersecurity experts for Digital Europe and Horizon Europe"],
+      "deadline": "Permanently open through EU MFF 2021-2027; 2026-06-15 was encouraged, not a hard deadline",
+      "programme_dates": "Periodic short-term contractual assignments; limited number of working days; remote evaluations, panels, project reviews, or advisory activities",
+      "location_format": "Primarily remote; assignments may include panels or on-site work under EU expert contracts",
+      "funding_stream": "EU Funding & Tenders Portal independent expert contracts",
+      "funding": "Competitive remuneration; EU expert online manual states EUR 450/day for applicable work, with travel expenses and accommodation/daily allowances reimbursed when travel is contractually required",
+      "canonical_url": "https://cybersecurity-centre.europa.eu/news/eccc-seeks-cybersecurity-experts-major-funding-programmes-2026-05-18_en",
+      "reported_at": "2026-09-07T14:53:07Z"
+    },
+    {
+      "host": "Tech Policy Press",
+      "program_family": "Tech Policy Press Fellowship",
+      "cycle": "2027 cohort",
+      "title": "2027 Tech Policy Press Fellowship Program",
+      "aliases": ["Tech Policy Press Fellowship 2027", "Call for Applications: 2027 Tech Policy Press Fellowship Program"],
+      "deadline": "2026-09-24T23:59:00-04:00",
+      "programme_dates": "January 2027 to December 2027; 12 months, part-time",
+      "location_format": "Remote; international cohort",
+      "funding_stream": "Tech Policy Press fellowship stipend",
+      "funding": "USD 10,000 stipend",
+      "canonical_url": "https://www.techpolicy.press/call-for-applications-2027-tech-policy-press-fellowship-program/",
+      "reported_at": "2026-08-25"
+    },
+    {
+      "host": "Institute for Human Sciences (IWM)",
+      "program_family": "Digital Humanism Fellowship",
+      "cycle": "2026-2027 academic year",
+      "title": "Digital Humanism Fellowship 2026-2027",
+      "aliases": ["Digital Humanism Junior Visiting Fellowship 2026-2027", "IWM Digital Humanism Fellowship"],
+      "deadline": "2026-09-21T23:59:00+02:00",
+      "programme_dates": "Three consecutive months in Vienna between February and June 2027",
+      "location_format": "Vienna, Austria, in person",
+      "funding_stream": "IWM Digital Humanism Junior Visiting Fellowship stipend",
+      "funding": "EUR 2,750/month for doctoral candidates; EUR 3,300/month for postdoctoral fellows",
+      "canonical_url": "https://www.iwm.at/calls/digital-humanism-fellowship",
+      "reported_at": "2026-09-01"
+    },
+    {
+      "host": "Kairos / Global Challenges Project (GCP)",
+      "program_family": "Global Challenges Project AI Safety Workshop",
+      "cycle": "London November 2026 working-professionals workshop",
+      "title": "Global Challenges Project AI Safety Workshop for Working Professionals, London, November 2026",
+      "aliases": ["GCP AI Safety Workshop, London, November 2026", "Global Challenges Project London Workshop November 2026", "AI Safety Workshop for working professionals London November 6-9 2026"],
+      "deadline": "2026-10-02T23:59:59-12:00",
+      "programme_dates": "2026-11-06 to 2026-11-09",
+      "location_format": "London, United Kingdom; in-person residential workshop",
+      "funding_stream": "GCP workshop participation support",
+      "funding": "Workshop free; travel, accommodation and meals provided; refundable USD 100 deposit after attendance",
+      "canonical_url": "https://www.globalchallengesproject.org/calendar",
+      "application_url": "https://gcp-apply.kairos-project.org/",
+      "reported_at": "2026-09-07T23:30:00Z"
+    },
+    {
+      "host": "Technovator / DeepTech GigaHack",
+      "program_family": "DeepTech GigaHack International Fully Funded Places",
+      "cycle": "Edition 4 / 2026 international call",
+      "title": "DeepTech GigaHack 2026 International Call, 20 Fully Funded Places",
+      "aliases": ["Deeptech Gigahack Edition 4 International Applications", "DeepTech GigaHack 2026 Fully Funded International Places", "GigaHack 2026 International Call"],
+      "deadline": "2026-09-08",
+      "programme_dates": "2026-09-25 to 2026-09-27",
+      "location_format": "Tekwill, Chisinau, Moldova; in-person",
+      "funding_stream": "20 fully funded international participant places",
+      "funding": "Round-trip flights, accommodation, meals and refreshments; team matching, mentorship/networking and prize access",
+      "canonical_url": "https://gigahack.md/international-applications/",
+      "reported_at": "2026-09-08T01:25:39Z"
+    },
+    {
+      "host": "BlueDot Impact",
+      "program_family": "Rapid Grants",
+      "cycle": "Rolling 2026 open call",
+      "title": "BlueDot Impact Rapid Grants",
+      "aliases": ["BlueDot Rapid Grants", "Rapid Grants for AI Safety and Biosecurity Projects", "BlueDot Impact Rapid Grants 2026"],
+      "deadline": "Rolling; no fixed deadline stated; open as of 2026-09-08",
+      "programme_dates": "Project-specific; short, concrete AI safety or biosecurity work",
+      "location_format": "Global / project-based; remote or travel-supported depending on project",
+      "funding_stream": "BlueDot Impact Rapid Grants",
+      "funding": "USD 50 to USD 10,000; upfront by default or reimbursement; eligible costs include research access, compute/API credits, events, travel, tooling and related concrete project costs",
+      "canonical_url": "https://bluedot.org/grants/rapid",
+      "reported_at": "2026-09-08T06:16:00Z"
+    },
+    {
+      "host": "AI Security Bootcamp (AISB), fiscally sponsored by BlueDot Impact",
+      "program_family": "AI Security Bootcamp",
+      "cycle": "AISB London December 2026",
+      "title": "AI Security Bootcamp London 2026",
+      "aliases": ["AISB London 2026", "AI Security Bootcamp London, December 2026", "AISB London Dec 6-12 2026"],
+      "deadline": "2026-10-01T23:59:59-12:00",
+      "programme_dates": "2026-12-06 to 2026-12-12; 7-day intensive",
+      "location_format": "London, United Kingdom; in-person",
+      "funding_stream": "AISB fully funded participant support",
+      "funding": "Tuition, meals during program hours, materials, and accommodation in London fully covered; need-based travel support available",
+      "canonical_url": "https://aisb.dev/2026/dec/london/",
+      "application_url": "https://airtable.com/appyq1bBRnK6s7AkM/paglvXzxYAiJclCZX/form",
+      "reported_at": "2026-09-08T14:19:09Z"
+    },
+    {
+      "host": "Advanced Research and Invention Agency (ARIA)",
+      "program_family": "Scaling Trust Tracks 2 & 3 Rolling Applications",
+      "cycle": "Rolling 2026 call, current quarterly cut-off 2026-10-31",
+      "title": "ARIA Scaling Trust: Tracks 2 & 3 Rolling Applications",
+      "aliases": ["Scaling Trust Rolling Applications", "ARIA Scaling Trust Track 2 Tooling and Track 3 Fundamental Research", "Trust Everything, Everywhere - Scaling Trust Funding"],
+      "deadline": "2026-10-31T14:00:00+00:00",
+      "programme_dates": "Project duration 3 to 18 months, depending on track/project; rolling quarterly review cycles",
+      "location_format": "UK-focused R&D programme; applications accepted from individuals and organisations worldwide, including non-UK applicants with a credible UK-benefit plan",
+      "funding_stream": "ARIA Scaling Trust Tracks 2 & 3 project grants",
+      "funding": "Grant size GBP 100,000 to GBP 3,000,000; ARIA states it will fund 100% of eligible project costs; Track 2 projects are GBP 200,000 to GBP 2,000,000",
+      "canonical_url": "https://aria.org.uk/opportunity-spaces/trust-everything-everywhere/scaling-trust/funding",
+      "application_url": "https://aria.grantplatform.com/",
+      "reported_at": "2026-09-08T15:45:00+02:00"
+    }
+  ]
+}
