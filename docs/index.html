@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#0b1f2a">
+  <title>Funded ICT Opportunity Watch</title>
+  <meta name="description" content="A fast, private-by-default dashboard for Sameer's funded ICT opportunity monitor.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">FW</div>
+      <div>
+        <h1>Funded ICT Opportunity Watch</h1>
+        <p>AI · Cybersecurity · ICT · 5G/6G · Digital Policy · Trustworthy AI</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="themeBtn" class="ghost" type="button" aria-label="Toggle theme">◐ Theme</button>
+      <button id="exportBtn" class="ghost" type="button">Export my status</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="summary">
+      <div class="stat"><span id="totalCount">0</span><small>Tracked</small></div>
+      <div class="stat"><span id="openCount">0</span><small>Open</small></div>
+      <div class="stat"><span id="soonCount">0</span><small>Closing ≤7d</small></div>
+      <div class="stat"><span id="rollingCount">0</span><small>Rolling</small></div>
+      <div class="stat"><span id="appliedCount">0</span><small>Applied</small></div>
+    </section>
+
+    <section class="controls">
+      <label class="searchbox">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="Search title, host, field, country, funding…">
+      </label>
+
+      <select id="statusFilter" aria-label="Status filter">
+        <option value="active">Active only</option>
+        <option value="all">All statuses</option>
+        <option value="OPEN">Open</option>
+        <option value="CLOSING SOON">Closing soon</option>
+        <option value="ROLLING">Rolling</option>
+        <option value="CLOSED">Closed</option>
+      </select>
+
+      <select id="categoryFilter" aria-label="Category filter">
+        <option value="all">All fields</option>
+        <option value="AI">AI / ML / AI Safety</option>
+        <option value="Cybersecurity">Cybersecurity</option>
+        <option value="Networks">5G / 6G / Networks</option>
+        <option value="Policy">Digital Policy / Governance</option>
+        <option value="Funding">Fellowships / Grants</option>
+      </select>
+
+      <select id="sortFilter" aria-label="Sort opportunities">
+        <option value="deadline">Deadline soonest</option>
+        <option value="newest">Newest first</option>
+        <option value="title">Title A–Z</option>
+      </select>
+
+      <label class="check"><input id="hideIgnored" type="checkbox" checked> Hide ignored</label>
+    </section>
+
+    <section class="meta">
+      <span id="lastSync">Loading monitor data…</span>
+      <span class="privacy">Your Applied / Interested / Ignore / Notes choices stay only in this browser.</span>
+    </section>
+
+    <section id="cards" class="cards" aria-live="polite"></section>
+    <div id="emptyState" class="empty" hidden>No opportunities match these filters.</div>
+  </main>
+
+  <template id="cardTemplate">
+    <article class="card">
+      <div class="card-top">
+        <div class="badges">
+          <span class="badge status"></span>
+          <span class="badge category"></span>
+        </div>
+        <button class="star" type="button" title="Interested" aria-label="Mark interested">☆</button>
+      </div>
+      <h2 class="title"></h2>
+      <p class="host"></p>
+      <div class="facts">
+        <div><span>Deadline</span><strong class="deadline"></strong></div>
+        <div><span>Programme</span><strong class="dates"></strong></div>
+        <div><span>Location</span><strong class="location"></strong></div>
+        <div><span>Funding</span><strong class="funding"></strong></div>
+      </div>
+      <details>
+        <summary>More details</summary>
+        <div class="details-grid">
+          <p><b>Programme family:</b> <span class="family"></span></p>
+          <p><b>Cycle:</b> <span class="cycle"></span></p>
+          <p><b>Funding stream:</b> <span class="stream"></span></p>
+          <p><b>Aliases:</b> <span class="aliases"></span></p>
+          <p><b>First reported:</b> <span class="reported"></span></p>
+        </div>
+        <label class="notes-label">My notes
+          <textarea class="notes" rows="3" placeholder="Private note stored in this browser only"></textarea>
+        </label>
+      </details>
+      <div class="actions">
+        <a class="primary apply-link" target="_blank" rel="noopener">Official page ↗</a>
+        <button class="applied-btn" type="button">Mark applied</button>
+        <button class="ignore-btn ghost" type="button">Ignore</button>
+      </div>
+    </article>
+  </template>
+
+  <footer>
+    <p>Dashboard data is generated from the Funded ICT Opportunity Watch ledger. Always rely on the official call for final application requirements.</p>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
