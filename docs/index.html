@@ -5,32 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#0b1f2a">
-  <title>Funded ICT Opportunity Watch</title>
-  <meta name="description" content="A fast, private-by-default dashboard for Sameer's funded ICT opportunity monitor.">
+  <title>Funded ICT Opportunity Watch · Sameer Ali</title>
+  <meta name="description" content="A curated public dashboard of funded opportunities in AI, cybersecurity, ICT, 5G/6G, digital policy and trustworthy AI, maintained by Sameer Ali.">
+  <meta property="og:title" content="Funded ICT Opportunity Watch · Sameer Ali">
+  <meta property="og:description" content="Discover funded opportunities in AI, cybersecurity, ICT, 5G/6G, digital policy and trustworthy AI.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sameer43786.github.io/eu-opportunity-alerts/">
+  <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <div class="logo">FW</div>
+      <div class="logo" aria-hidden="true">SA</div>
       <div>
         <h1>Funded ICT Opportunity Watch</h1>
-        <p>AI · Cybersecurity · ICT · 5G/6G · Digital Policy · Trustworthy AI</p>
+        <p class="brandline">Curated by <strong>Sameer Ali</strong> · AI · Cybersecurity · ICT · 5G/6G · Digital Policy</p>
       </div>
     </div>
     <div class="header-actions">
+      <button id="shareBtn" class="share-button" type="button">↗ Share dashboard</button>
       <button id="themeBtn" class="ghost" type="button" aria-label="Toggle theme">◐ Theme</button>
       <button id="exportBtn" class="ghost" type="button">Export my status</button>
     </div>
   </header>
 
   <main>
+    <section class="hero-note">
+      <div>
+        <span class="eyebrow">SAMEER ALI · OPPORTUNITY INTELLIGENCE</span>
+        <h2>Funded opportunities, filtered for quality and kept in one place.</h2>
+        <p>Share this dashboard with friends. Everyone sees the same monitored opportunities, while Interested, Applied, Ignore and Notes are stored privately in each person's own browser.</p>
+      </div>
+      <div class="hero-links">
+        <a class="profile-link" href="https://github.com/sameer43786" target="_blank" rel="noopener">GitHub @sameer43786 ↗</a>
+      </div>
+    </section>
+
+    <section class="friend-notice" role="note">
+      <strong>For friends and other viewers:</strong>
+      <span>the opportunity list is public, but eligibility is personal. Verify nationality, residence, age, career stage, institution, funding and prerequisites on the official call before applying.</span>
+    </section>
+
     <section class="summary">
       <div class="stat"><span id="totalCount">0</span><small>Tracked</small></div>
       <div class="stat"><span id="openCount">0</span><small>Open</small></div>
       <div class="stat"><span id="soonCount">0</span><small>Closing ≤7d</small></div>
       <div class="stat"><span id="rollingCount">0</span><small>Rolling</small></div>
-      <div class="stat"><span id="appliedCount">0</span><small>Applied</small></div>
+      <div class="stat"><span id="appliedCount">0</span><small>My applied</small></div>
     </section>
 
     <section class="controls">
@@ -68,7 +90,7 @@
 
     <section class="meta">
       <span id="lastSync">Loading monitor data…</span>
-      <span class="privacy">Your Applied / Interested / Ignore / Notes choices stay only in this browser.</span>
+      <span class="privacy">Your personal status and notes stay only in this browser.</span>
     </section>
 
     <section id="cards" class="cards" aria-live="polite"></section>
@@ -107,14 +129,18 @@
       </details>
       <div class="actions">
         <a class="primary apply-link" target="_blank" rel="noopener">Official page ↗</a>
+        <button class="share-opportunity-btn" type="button">Share</button>
         <button class="applied-btn" type="button">Mark applied</button>
         <button class="ignore-btn ghost" type="button">Ignore</button>
       </div>
     </article>
   </template>
 
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
   <footer>
-    <p>Dashboard data is generated from the Funded ICT Opportunity Watch ledger. Always rely on the official call for final application requirements.</p>
+    <div class="footer-brand"><span class="footer-mark">SA</span><strong>Funded ICT Opportunity Watch</strong></div>
+    <p>Curated by <a href="https://github.com/sameer43786" target="_blank" rel="noopener">Sameer Ali</a>. Dashboard data is generated from the monitored opportunity ledger. Always rely on the official call for final application requirements.</p>
   </footer>
 
   <script src="app.js" defer></script>
