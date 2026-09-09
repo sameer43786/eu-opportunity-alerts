@@ -1,6 +1,7 @@
 const DATA_URL = "data/opportunities.json";
 const STATE_KEY = "fundedICTOpportunityWatchState.v1";
 const THEME_KEY = "fundedICTOpportunityWatchTheme";
+const DASHBOARD_URL = "https://sameer43786.github.io/eu-opportunity-alerts/";
 let records = [];
 
 const $ = (s, root=document) => root.querySelector(s);
@@ -10,6 +11,31 @@ const state = JSON.parse(localStorage.getItem(STATE_KEY) || "{}");
 function saveState(){ localStorage.setItem(STATE_KEY, JSON.stringify(state)); updateStats(); }
 function keyFor(r){ const raw=(r.canonical_url || `${r.host}|${r.title}|${r.cycle}`).toLowerCase(); return raw.split(/[?#]/)[0].replace(/\/$/,""); }
 function personal(r){ const k=keyFor(r); return state[k] || (state[k]={applied:false,interested:false,ignored:false,notes:""}); }
+
+function showToast(message){
+  const toast=$("#toast");
+  toast.textContent=message;
+  toast.hidden=false;
+  clearTimeout(showToast.timer);
+  showToast.timer=setTimeout(()=>{toast.hidden=true},2600);
+}
+async function sharePayload(payload, fallbackUrl){
+  try{
+    if(navigator.share){
+      await navigator.share(payload);
+      return;
+    }
+    await navigator.clipboard.writeText(fallbackUrl || payload.url || payload.text || "");
+    showToast("Link copied to clipboard");
+  }catch(err){
+    if(err?.name!=="AbortError"){
+      try{
+        await navigator.clipboard.writeText(fallbackUrl || payload.url || payload.text || "");
+        showToast("Link copied to clipboard");
+      }catch(_){ showToast("Could not share automatically. Copy the link from the address bar."); }
+    }
+  }
+}
 
 function extractDates(r){
   const raw = [r.deadline, ...(r.deadlines||[])].filter(Boolean).join(" ");
@@ -103,12 +129,14 @@ function render(){
     $(".reported",node).textContent=r.reported_at || "—";
 
     const official=$(".apply-link",node);
-    official.href=r.application_url || r.canonical_url || "#";
+    const officialUrl=r.application_url || r.canonical_url || "#";
+    official.href=officialUrl;
 
     const star=$(".star",node);
     const applied=$(".applied-btn",node);
     const ignore=$(".ignore-btn",node);
     const notes=$(".notes",node);
+    const shareOpportunity=$(".share-opportunity-btn",node);
 
     if(p.interested){star.textContent="★";star.classList.add("active");node.classList.add("is-interested")}
     if(p.applied){applied.textContent="Applied ✓";applied.classList.add("active");node.classList.add("is-applied")}
@@ -119,6 +147,11 @@ function render(){
     applied.addEventListener("click",()=>{p.applied=!p.applied;saveState();render()});
     ignore.addEventListener("click",()=>{p.ignored=!p.ignored;saveState();render()});
     notes.addEventListener("change",()=>{p.notes=notes.value;saveState()});
+    shareOpportunity.addEventListener("click",()=>sharePayload({
+      title:titleFor(r),
+      text:`${titleFor(r)} · ${r.host || "Funded opportunity"}\nDeadline: ${displayDeadline(r)}\nShared from Sameer Ali's Funded ICT Opportunity Watch`,
+      url:officialUrl
+    },officialUrl));
 
     cards.appendChild(node);
   }
@@ -162,6 +195,11 @@ async function init(){
   document.addEventListener("change",e=>{if(e.target?.id===id) render()});
 });
 $("#exportBtn").addEventListener("click",exportStatus);
+$("#shareBtn").addEventListener("click",()=>sharePayload({
+  title:"Funded ICT Opportunity Watch · Sameer Ali",
+  text:"A curated dashboard of funded opportunities in AI, cybersecurity, ICT, 5G/6G, digital policy and trustworthy AI.",
+  url:DASHBOARD_URL
+},DASHBOARD_URL));
 $("#themeBtn").addEventListener("click",()=>{
   const current=document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
   setTheme(current==="dark"?"light":"dark");
