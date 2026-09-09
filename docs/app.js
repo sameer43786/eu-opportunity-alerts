@@ -2,6 +2,7 @@ const DATA_URL = "data/opportunities.json";
 const STATE_KEY = "fundedICTOpportunityWatchState.v1";
 const THEME_KEY = "fundedICTOpportunityWatchTheme";
 const DASHBOARD_URL = "https://sameer43786.github.io/eu-opportunity-alerts/";
+const PAYPAL_URL = "https://paypal.me/Sameerbinaman";
 let records = [];
 
 const $ = (s, root=document) => root.querySelector(s);
@@ -34,6 +35,25 @@ async function sharePayload(payload, fallbackUrl){
         showToast("Link copied to clipboard");
       }catch(_){ showToast("Could not share automatically. Copy the link from the address bar."); }
     }
+  }
+}
+function openSupport(){
+  const modal=$("#supportModal");
+  modal.hidden=false;
+  document.body.classList.add("modal-open");
+  $("#closeSupportBtn")?.focus();
+}
+function closeSupport(){
+  const modal=$("#supportModal");
+  modal.hidden=true;
+  document.body.classList.remove("modal-open");
+}
+async function copyPayPal(){
+  try{
+    await navigator.clipboard.writeText(PAYPAL_URL);
+    showToast("PayPal link copied");
+  }catch(_){
+    showToast("Copy this link: paypal.me/Sameerbinaman");
   }
 }
 
@@ -200,6 +220,17 @@ $("#shareBtn").addEventListener("click",()=>sharePayload({
   text:"A curated dashboard of funded opportunities in AI, cybersecurity, ICT, 5G/6G, digital policy and trustworthy AI.",
   url:DASHBOARD_URL
 },DASHBOARD_URL));
+$("#supportBtn").addEventListener("click",openSupport);
+$("#footerSupportBtn").addEventListener("click",openSupport);
+$("#closeSupportBtn").addEventListener("click",closeSupport);
+$("#copyPayPalBtn").addEventListener("click",copyPayPal);
+$("#shareSupportBtn").addEventListener("click",()=>sharePayload({
+  title:"Support Funded ICT Opportunity Watch",
+  text:"Help keep Sameer Ali's public Funded ICT Opportunity Watch maintained and available to the community.",
+  url:DASHBOARD_URL
+},DASHBOARD_URL));
+$("#supportModal").addEventListener("click",e=>{if(e.target.id==="supportModal") closeSupport();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape" && !$("#supportModal").hidden) closeSupport();});
 $("#themeBtn").addEventListener("click",()=>{
   const current=document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
   setTheme(current==="dark"?"light":"dark");
