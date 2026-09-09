@@ -1,4 +1,4 @@
-# Europe Opportunity Alerts
+# Global Opportunity Alerts
 
 An automated GitHub Actions monitor for European short-term training, youth, education, research, cybersecurity, IT, artificial-intelligence and workflow-automation opportunities.
 
