@@ -24,6 +24,7 @@
       </div>
     </div>
     <div class="header-actions">
+      <button id="supportBtn" class="support-button" type="button">♡ Support this work</button>
       <button id="shareBtn" class="share-button" type="button">↗ Share dashboard</button>
       <button id="themeBtn" class="ghost" type="button" aria-label="Toggle theme">◐ Theme</button>
       <button id="exportBtn" class="ghost" type="button">Export my status</button>
@@ -136,11 +137,44 @@
     </article>
   </template>
 
+  <div id="supportModal" class="modal-backdrop" hidden>
+    <section class="support-modal" role="dialog" aria-modal="true" aria-labelledby="supportTitle">
+      <button id="closeSupportBtn" class="modal-close" type="button" aria-label="Close support window">×</button>
+      <span class="support-kicker">KEEP THE WATCH RUNNING</span>
+      <h2 id="supportTitle">Support independent opportunity intelligence</h2>
+      <p class="support-lead">This dashboard is maintained as a public resource. Contributions help sustain monitoring, source verification, eligibility screening, duplicate prevention and ongoing improvements.</p>
+
+      <div class="support-principles">
+        <div><strong>Open access</strong><span>The dashboard remains free to browse and share.</span></div>
+        <div><strong>Independent curation</strong><span>Donations never influence which opportunities are included or ranked.</span></div>
+        <div><strong>Maintenance first</strong><span>Support goes toward keeping the monitor accurate, current and useful.</span></div>
+      </div>
+
+      <div class="support-card">
+        <div class="support-mark">SA</div>
+        <div class="support-copy">
+          <small>OPTIONAL COMMUNITY SUPPORT</small>
+          <strong>Help Sameer keep maintaining Funded ICT Opportunity Watch</strong>
+          <span>Any amount is appreciated. PayPal opens securely in a separate tab.</span>
+        </div>
+      </div>
+
+      <div class="support-actions">
+        <a class="paypal-button" href="https://paypal.me/Sameerbinaman" target="_blank" rel="noopener noreferrer">Support via PayPal ↗</a>
+        <button id="copyPayPalBtn" class="ghost" type="button">Copy PayPal link</button>
+        <button id="shareSupportBtn" class="ghost" type="button">Share support page</button>
+      </div>
+
+      <p class="support-footnote">Support is voluntary. This is not a subscription, paid placement or guarantee of eligibility. Always apply through the official opportunity provider.</p>
+    </section>
+  </div>
+
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
   <footer>
     <div class="footer-brand"><span class="footer-mark">SA</span><strong>Funded ICT Opportunity Watch</strong></div>
     <p>Curated by <a href="https://github.com/sameer43786" target="_blank" rel="noopener">Sameer Ali</a>. Dashboard data is generated from the monitored opportunity ledger. Always rely on the official call for final application requirements.</p>
+    <button id="footerSupportBtn" class="footer-support" type="button">♡ Support continued maintenance</button>
   </footer>
 
   <script src="app.js" defer></script>
