@@ -8,7 +8,7 @@ const $$ = (s, root=document) => [...root.querySelectorAll(s)];
 const state = JSON.parse(localStorage.getItem(STATE_KEY) || "{}");
 
 function saveState(){ localStorage.setItem(STATE_KEY, JSON.stringify(state)); updateStats(); }
-function keyFor(r){ return (r.canonical_url || `${r.host}|${r.title}|${r.cycle}`).toLowerCase().replace(/[?#].*$/,").replace(/\/$/,"); }
+function keyFor(r){ const raw=(r.canonical_url || `${r.host}|${r.title}|${r.cycle}`).toLowerCase(); return raw.split(/[?#]/)[0].replace(/\/$/,""); }
 function personal(r){ const k=keyFor(r); return state[k] || (state[k]={applied:false,interested:false,ignored:false,notes:""}); }
 
 function extractDates(r){
