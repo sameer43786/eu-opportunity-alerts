@@ -39,12 +39,14 @@ async function sharePayload(payload, fallbackUrl){
 }
 function openSupport(){
   const modal=$("#supportModal");
+  if(!modal) return;
   modal.hidden=false;
   document.body.classList.add("modal-open");
   $("#closeSupportBtn")?.focus();
 }
 function closeSupport(){
   const modal=$("#supportModal");
+  if(!modal) return;
   modal.hidden=true;
   document.body.classList.remove("modal-open");
 }
@@ -83,6 +85,31 @@ function deadlineSortValue(r){
   if(statusFor(r)==="ROLLING") return Number.MAX_SAFE_INTEGER-1;
   return Number.MAX_SAFE_INTEGER;
 }
+function publishedRaw(r){ return r.published_at || r.reported_at || ""; }
+function publishedSortValue(r){
+  const d = new Date(publishedRaw(r));
+  return Number.isNaN(d.getTime()) ? 0 : d.getTime();
+}
+function formatPublished(r){
+  const raw=publishedRaw(r);
+  if(!raw) return "Date unavailable";
+  const d=new Date(raw);
+  if(Number.isNaN(d.getTime())) return raw;
+  try{
+    return new Intl.DateTimeFormat(undefined,{
+      day:"2-digit", month:"short", year:"numeric",
+      hour:"2-digit", minute:"2-digit", timeZoneName:"short"
+    }).format(d);
+  }catch(_){ return d.toLocaleString(); }
+}
+function latestRecordKey(){
+  let best=null, bestTs=-1;
+  for(const r of records){
+    const ts=publishedSortValue(r);
+    if(ts>bestTs){ best=r; bestTs=ts; }
+  }
+  return best && bestTs>0 ? keyFor(best) : null;
+}
 function categoryFor(r){
   const t = [r.title,r.host,r.program_family,r.cycle,r.funding_stream,r.location_format].filter(Boolean).join(" ").toLowerCase();
   if(/cyber|security|privacy|trust|threat|malware|phishing|secure/.test(t)) return "Cybersecurity";
@@ -109,6 +136,7 @@ function render(){
   const cf=$("#categoryFilter").value;
   const hideIgnored=$("#hideIgnored").checked;
   const sort=$("#sortFilter").value;
+  const newestKey=latestRecordKey();
 
   let items = records.filter(r=>{
     const p=personal(r), status=statusFor(r), cat=categoryFor(r);
@@ -117,14 +145,14 @@ function render(){
     if(sf!=="active" && sf!=="all" && status!==sf) return false;
     if(cf!=="all" && cat!==cf) return false;
     if(q){
-      const hay=[r.title,r.host,r.program_family,r.cycle,r.deadline,r.funding,r.funding_stream,r.location_format,...(r.aliases||[])].filter(Boolean).join(" ").toLowerCase();
+      const hay=[r.title,r.host,r.program_family,r.cycle,r.deadline,r.funding,r.funding_stream,r.location_format,r.published_at,r.reported_at,...(r.aliases||[])].filter(Boolean).join(" ").toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
   });
 
   items.sort((a,b)=>{
-    if(sort==="newest") return String(b.reported_at||"").localeCompare(String(a.reported_at||""));
+    if(sort==="newest") return publishedSortValue(b)-publishedSortValue(a) || titleFor(a).localeCompare(titleFor(b));
     if(sort==="title") return titleFor(a).localeCompare(titleFor(b));
     return deadlineSortValue(a)-deadlineSortValue(b);
   });
@@ -146,7 +174,15 @@ function render(){
     $(".cycle",node).textContent=r.cycle || "—";
     $(".stream",node).textContent=r.funding_stream || "—";
     $(".aliases",node).textContent=displayAliases(r);
-    $(".reported",node).textContent=r.reported_at || "—";
+    const publishedText=formatPublished(r);
+    $(".published",node).textContent=publishedText;
+    $(".reported",node).textContent=publishedText;
+
+    if(newestKey && keyFor(r)===newestKey){
+      const latest=$(".latest-badge",node);
+      latest.hidden=false;
+      node.classList.add("latest-post-card");
+    }
 
     const official=$(".apply-link",node);
     const officialUrl=r.application_url || r.canonical_url || "#";
@@ -169,7 +205,7 @@ function render(){
     notes.addEventListener("change",()=>{p.notes=notes.value;saveState()});
     shareOpportunity.addEventListener("click",()=>sharePayload({
       title:titleFor(r),
-      text:`${titleFor(r)} · ${r.host || "Funded opportunity"}\nDeadline: ${displayDeadline(r)}\nShared from Sameer Ali's Funded ICT Opportunity Watch`,
+      text:`${titleFor(r)} · ${r.host || "Funded opportunity"}\nPublished: ${publishedText}\nDeadline: ${displayDeadline(r)}\nShared from Sameer Ali's Funded ICT Opportunity Watch`,
       url:officialUrl
     },officialUrl));
 
@@ -203,7 +239,12 @@ async function init(){
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const data=await res.json();
     records=data.opportunities||[];
-    $("#lastSync").textContent=`Monitor data updated: ${data.updated_at || "unknown"} · ${records.length} tracked records`;
+    let syncText=data.updated_at || "unknown";
+    if(data.updated_at){
+      const syncDate=new Date(data.updated_at);
+      if(!Number.isNaN(syncDate.getTime())) syncText=syncDate.toLocaleString();
+    }
+    $("#lastSync").textContent=`Monitor data updated: ${syncText} · ${records.length} tracked records`;
     render();
   }catch(e){
     $("#lastSync").textContent="Could not load dashboard data. Refresh or check the repository data file.";
@@ -214,24 +255,24 @@ async function init(){
   document.addEventListener("input",e=>{if(e.target?.id===id) render()});
   document.addEventListener("change",e=>{if(e.target?.id===id) render()});
 });
-$("#exportBtn").addEventListener("click",exportStatus);
-$("#shareBtn").addEventListener("click",()=>sharePayload({
+$("#exportBtn")?.addEventListener("click",exportStatus);
+$("#shareBtn")?.addEventListener("click",()=>sharePayload({
   title:"Funded ICT Opportunity Watch · Sameer Ali",
   text:"A curated dashboard of funded opportunities in AI, cybersecurity, ICT, 5G/6G, digital policy and trustworthy AI.",
   url:DASHBOARD_URL
 },DASHBOARD_URL));
-$("#supportBtn").addEventListener("click",openSupport);
-$("#footerSupportBtn").addEventListener("click",openSupport);
-$("#closeSupportBtn").addEventListener("click",closeSupport);
-$("#copyPayPalBtn").addEventListener("click",copyPayPal);
-$("#shareSupportBtn").addEventListener("click",()=>sharePayload({
+$("#supportBtn")?.addEventListener("click",e=>{e.preventDefault();openSupport();});
+$("#footerSupportBtn")?.addEventListener("click",e=>{e.preventDefault();openSupport();});
+$("#closeSupportBtn")?.addEventListener("click",closeSupport);
+$("#copyPayPalBtn")?.addEventListener("click",copyPayPal);
+$("#shareSupportBtn")?.addEventListener("click",()=>sharePayload({
   title:"Support Funded ICT Opportunity Watch",
   text:"Help keep Sameer Ali's public Funded ICT Opportunity Watch maintained and available to the community.",
   url:DASHBOARD_URL
 },DASHBOARD_URL));
-$("#supportModal").addEventListener("click",e=>{if(e.target.id==="supportModal") closeSupport();});
-document.addEventListener("keydown",e=>{if(e.key==="Escape" && !$("#supportModal").hidden) closeSupport();});
-$("#themeBtn").addEventListener("click",()=>{
+$("#supportModal")?.addEventListener("click",e=>{if(e.target.id==="supportModal") closeSupport();});
+document.addEventListener("keydown",e=>{const modal=$("#supportModal");if(e.key==="Escape" && modal && !modal.hidden) closeSupport();});
+$("#themeBtn")?.addEventListener("click",()=>{
   const current=document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
   setTheme(current==="dark"?"light":"dark");
 });
