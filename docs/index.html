@@ -13,6 +13,7 @@
   <meta property="og:url" content="https://sameer43786.github.io/eu-opportunity-alerts/">
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="styles.css?v=20260909-3">
+  <link rel="stylesheet" href="latest-posts.css?v=20260910-1">
 </head>
 <body>
   <header class="topbar">
@@ -88,8 +89,8 @@
       </select>
 
       <select id="sortFilter" aria-label="Sort opportunities">
+        <option value="newest">Newest published first</option>
         <option value="deadline">Deadline soonest</option>
-        <option value="newest">Newest first</option>
         <option value="title">Title A–Z</option>
       </select>
 
@@ -98,7 +99,7 @@
 
     <section class="meta">
       <span id="lastSync">Loading monitor data…</span>
-      <span class="privacy">Your personal status and notes stay only in this browser.</span>
+      <span class="privacy">Newest verified opportunities are shown first · Your personal status and notes stay only in this browser.</span>
     </section>
 
     <section id="cards" class="cards" aria-live="polite"></section>
@@ -109,6 +110,7 @@
     <article class="card">
       <div class="card-top">
         <div class="badges">
+          <span class="badge latest-badge" hidden>● LATEST POST</span>
           <span class="badge status"></span>
           <span class="badge category"></span>
         </div>
@@ -116,6 +118,10 @@
       </div>
       <h2 class="title"></h2>
       <p class="host"></p>
+      <div class="published-row">
+        <span class="published-icon" aria-hidden="true">◷</span>
+        <span><b>Published on dashboard:</b> <time class="published"></time></span>
+      </div>
       <div class="facts">
         <div><span>Deadline</span><strong class="deadline"></strong></div>
         <div><span>Programme</span><strong class="dates"></strong></div>
@@ -129,7 +135,7 @@
           <p><b>Cycle:</b> <span class="cycle"></span></p>
           <p><b>Funding stream:</b> <span class="stream"></span></p>
           <p><b>Aliases:</b> <span class="aliases"></span></p>
-          <p><b>First reported:</b> <span class="reported"></span></p>
+          <p><b>Published on dashboard:</b> <span class="reported"></span></p>
         </div>
         <label class="notes-label">My notes
           <textarea class="notes" rows="3" placeholder="Private note stored in this browser only"></textarea>
@@ -184,6 +190,6 @@
     <a id="footerSupportBtn" class="footer-support" href="support.html"><span aria-hidden="true">♥</span> Support continued maintenance</a>
   </footer>
 
-  <script src="app.js?v=20260909-2" defer></script>
+  <script src="app.js?v=20260910-1" defer></script>
 </body>
 </html>
