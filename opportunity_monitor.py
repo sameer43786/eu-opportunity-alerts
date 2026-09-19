@@ -239,9 +239,14 @@ def evaluate(item: Opportunity, config: dict[str, Any], body: str) -> Opportunit
     topical_any = criteria.get("require_topic_groups", [])
     if topical_any and not any(group in matches for group in topical_any):
         return None
+    funding_any = criteria.get("require_funding_groups", [])
+    if funding_any and not any(group in matches for group in funding_any):
+        return None
     if score < int(criteria.get("minimum_score", 8)):
         return None
     item.score, item.matches = score, matches
+    item.funding_evidence = matches.get("funding_support", [])
+    item.deadline = extract_deadline(text)
     return item
 
 
