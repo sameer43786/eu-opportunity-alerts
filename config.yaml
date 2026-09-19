@@ -41,6 +41,8 @@ criteria:
   # At least one audience/opportunity group and one topic group must match.
   require_any_groups: [audience, opportunity_type, organisations]
   require_topic_groups: [technical_topics, youth_education, research]
+  # Public-dashboard publication requires explicit funding/support evidence.
+  require_funding_groups: [funding_support]
 
   age:
     reject_explicit_limits: true
@@ -140,6 +142,32 @@ criteria:
         - phd
         - scientific
         - innovation
+
+    funding_support:
+      weight: 5
+      terms:
+        - fully funded
+        - full funding
+        - funded place
+        - financial support
+        - travel grant
+        - travel support
+        - travel reimbursement
+        - travel expenses
+        - accommodation covered
+        - accommodation provided
+        - stipend
+        - fellowship stipend
+        - grant
+        - remuneration
+        - honorarium
+        - paid
+        - reimbursement
+        - reimbursed
+        - subsistence
+        - meals provided
+        - tuition covered
+        - tuition waiver
 
     geography:
       weight: 2
