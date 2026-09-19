@@ -82,6 +82,89 @@ def clean_html(value: str) -> str:
     return re.sub(r"\s+", " ", BeautifulSoup(html.unescape(value), "html.parser").get_text(" ")).strip()
 
 
+_MONTHS = {
+    "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+    "jul": 7, "aug": 8, "sep": 9, "sept": 9, "oct": 10, "nov": 11, "dec": 12,
+}
+_MONTH_PATTERN = (
+    r"Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|"
+    r"Jul(?:y)?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?"
+)
+
+
+def _safe_date(year: int, month: int, day: int):
+    try:
+        return datetime(year, month, day, tzinfo=UTC).date()
+    except ValueError:
+        return None
+
+
+def extract_deadline(text: str) -> str:
+    """Return a future ISO deadline or a rolling-open label from deadline-focused text."""
+    compact = re.sub(r"\s+", " ", text)
+    lowered = compact.casefold()
+    rolling_terms = (
+        "applications accepted on a rolling basis",
+        "applications are accepted on a rolling basis",
+        "rolling applications",
+        "apply on a rolling basis",
+        "no fixed deadline",
+        "permanently open",
+        "open continuously",
+    )
+    if any(term in lowered for term in rolling_terms):
+        return "Rolling; no fixed deadline stated"
+
+    today = datetime.now(UTC).date()
+    candidates = []
+    deadline_windows = [
+        match.group(0)
+        for match in re.finditer(
+            r"(?:application deadline|deadline|apply by|applications? close(?:s|d)?|closing date)"
+            r"[^.;\n]{0,120}",
+            compact,
+            flags=re.IGNORECASE,
+        )
+    ]
+
+    for segment in deadline_windows:
+        for year, month, day in re.findall(r"\b(20\d{2})-(\d{1,2})-(\d{1,2})\b", segment):
+            parsed = _safe_date(int(year), int(month), int(day))
+            if parsed and parsed >= today:
+                candidates.append(parsed)
+
+        for day, month, year in re.findall(r"\b(\d{1,2})[/-](\d{1,2})[/-](20\d{2})\b", segment):
+            parsed = _safe_date(int(year), int(month), int(day))
+            if parsed and parsed >= today:
+                candidates.append(parsed)
+
+        for day, month_name, year in re.findall(
+            rf"\b(\d{{1,2}})\s+({_MONTH_PATTERN})[,]?\s+(20\d{{2}})\b",
+            segment,
+            flags=re.IGNORECASE,
+        ):
+            key = month_name.casefold()[:4] if month_name.casefold().startswith("sept") else month_name.casefold()[:3]
+            parsed = _safe_date(int(year), _MONTHS[key], int(day))
+            if parsed and parsed >= today:
+                candidates.append(parsed)
+
+        for month_name, day, year in re.findall(
+            rf"\b({_MONTH_PATTERN})\s+(\d{{1,2}})(?:st|nd|rd|th)?[,]?\s+(20\d{{2}})\b",
+            segment,
+            flags=re.IGNORECASE,
+        ):
+            key = month_name.casefold()[:4] if month_name.casefold().startswith("sept") else month_name.casefold()[:3]
+            parsed = _safe_date(int(year), _MONTHS[key], int(day))
+            if parsed and parsed >= today:
+                candidates.append(parsed)
+
+    return min(candidates).isoformat() if candidates else ""
+
+
+def normalize_url(url: str) -> str:
+    return url.split("#", 1)[0].split("?", 1)[0].rstrip("/").casefold()
+
+
 def search_source(source: dict[str, Any], session: requests.Session) -> list[Opportunity]:
     query = " ".join(source["queries"])
     response = session.get(bing_rss_url(query), timeout=30)
