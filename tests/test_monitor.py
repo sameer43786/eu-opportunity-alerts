@@ -78,6 +78,20 @@ class MonitorTests(unittest.TestCase):
             self.assertEqual(data["opportunities"][0]["canonical_url"], item.url)
             self.assertIsNotNone(data["updated_at"])
 
+    def test_dashboard_records_successful_empty_scan(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "opportunities.json"
+            path.write_text(
+                '{"watch_title":"Test","updated_at":null,"source":"test","opportunities":[]}\n',
+                encoding="utf-8",
+            )
+            self.assertEqual(monitor.append_dashboard_items(path, [], matched_count=0), 0)
+            data = monitor.load_dashboard_data(path)
+            self.assertIsNotNone(data["last_scan_at"])
+            self.assertEqual(data["last_scan_matches"], 0)
+            self.assertEqual(data["last_scan_dashboard_added"], 0)
+            self.assertIsNone(data["updated_at"])
+
 
 
 if __name__ == "__main__":
