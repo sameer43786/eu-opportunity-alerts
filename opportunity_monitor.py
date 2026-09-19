@@ -340,13 +340,14 @@ def dashboard_record(item: Opportunity) -> dict[str, Any]:
     }
 
 
-def append_dashboard_items(path: Path, items: list[Opportunity]) -> int:
-    """Append deduplicated matches only when deadline/rolling evidence is available."""
-    publishable = [item for item in items if item.deadline]
-    if not publishable:
-        return 0
-
+def append_dashboard_items(
+    path: Path,
+    items: list[Opportunity],
+    matched_count: int | None = None,
+) -> int:
+    """Record every successful scan and append only deadline-qualified, deduplicated matches."""
     data = load_dashboard_data(path)
+    publishable = [item for item in items if item.deadline]
     existing = {
         normalize_url(str(record.get("canonical_url", "")))
         for record in data["opportunities"]
@@ -360,11 +361,14 @@ def append_dashboard_items(path: Path, items: list[Opportunity]) -> int:
         additions.append(dashboard_record(item))
         existing.add(key)
 
-    if not additions:
-        return 0
-
-    data["opportunities"].extend(additions)
-    data["updated_at"] = datetime.now(UTC).isoformat()
+    now = datetime.now(UTC).isoformat()
+    if additions:
+        data["opportunities"].extend(additions)
+        data["updated_at"] = now
+    data["last_scan_at"] = now
+    data["last_scan_matches"] = len(items) if matched_count is None else matched_count
+    data["last_scan_new"] = len(items)
+    data["last_scan_dashboard_added"] = len(additions)
     data["source"] = "Curated ledger plus automated official-source screening"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -423,15 +427,18 @@ def run(
     new_items = new_items[:max_alerts]
     publishable_count = sum(bool(item.deadline) for item in new_items)
     print(f"Matched {len(matches)}; new {len(new_items)}; dashboard-publishable {publishable_count}.")
+
+    if dry_run:
+        if new_items:
+            print(render_markdown(new_items))
+        return 0
+
+    dashboard_added = append_dashboard_items(dashboard_path, new_items, matched_count=len(matches))
     if not new_items:
+        print("No new matches; successful scan timestamp recorded for the dashboard.")
         return 0
 
     body = render_markdown(new_items)
-    if dry_run:
-        print(body)
-        return 0
-
-    dashboard_added = append_dashboard_items(dashboard_path, new_items)
     seen.update(item.identity for item in new_items)
     save_state(state_path, seen)
 
