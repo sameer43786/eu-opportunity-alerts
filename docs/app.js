@@ -177,6 +177,7 @@ function render(){
     const publishedText=formatPublished(r);
     $(".published",node).textContent=publishedText;
     $(".reported",node).textContent=publishedText;
+    $(".verification",node).textContent=r.verification_status || "Curated ledger entry. Verify the official call before applying.";
 
     if(newestKey && keyFor(r)===newestKey){
       const latest=$(".latest-badge",node);
