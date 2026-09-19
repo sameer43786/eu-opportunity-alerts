@@ -31,7 +31,8 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parent
 DEFAULT_CONFIG = ROOT / "config.yaml"
 DEFAULT_STATE = ROOT / "data" / "seen.json"
-USER_AGENT = "EuropeOpportunityAlerts/1.0 (+https://github.com/sameer43786)"
+DEFAULT_DASHBOARD_DATA = ROOT / "docs" / "data" / "opportunities.json"
+USER_AGENT = "EuropeOpportunityAlerts/1.1 (+https://github.com/sameer43786)"
 
 
 @dataclass
@@ -44,6 +45,8 @@ class Opportunity:
     score: int = 0
     matches: dict[str, list[str]] = field(default_factory=dict)
     age_status: str = "not stated"
+    deadline: str = ""
+    funding_evidence: list[str] = field(default_factory=list)
 
     @property
     def identity(self) -> str:
