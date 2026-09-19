@@ -276,7 +276,7 @@ def render_markdown(items: list[Opportunity]) -> str:
     now = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
     lines = [f"## New European opportunity matches ({now})", ""]
     for item in items:
-        lines += [f"### [{item.title}]({item.url})", "", f"- **Source:** {item.source}", f"- **Match score:** {item.score}", f"- **Age-limit evidence:** {item.age_status}"]
+        lines += [f"### [{item.title}]({item.url})", "", f"- **Source:** {item.source}", f"- **Match score:** {item.score}", f"- **Age-limit evidence:** {item.age_status}", f"- **Deadline/rolling evidence:** {item.deadline or 'not confidently extracted'}", f"- **Funding/support evidence:** {', '.join(item.funding_evidence[:8]) or 'not detected'}"]
         if item.published:
             lines.append(f"- **Published:** {item.published}")
         for group, hits in item.matches.items():
