@@ -410,28 +410,43 @@ def send_email(subject: str, body: str) -> None:
         smtp.send_message(message)
 
 
-def run(config_path: Path, state_path: Path, dry_run: bool = False) -> int:
+def run(
+    config_path: Path,
+    state_path: Path,
+    dashboard_path: Path = DEFAULT_DASHBOARD_DATA,
+    dry_run: bool = False,
+) -> int:
     config, seen = load_yaml(config_path), load_state(state_path)
     matches = collect(config)
     new_items = [item for item in matches if item.identity not in seen]
     max_alerts = int(config.get("max_alerts_per_run", 10))
     new_items = new_items[:max_alerts]
-    print(f"Matched {len(matches)}; new {len(new_items)}.")
+    publishable_count = sum(bool(item.deadline) for item in new_items)
+    print(f"Matched {len(matches)}; new {len(new_items)}; dashboard-publishable {publishable_count}.")
     if not new_items:
         return 0
+
     body = render_markdown(new_items)
     if dry_run:
         print(body)
         return 0
+
+    dashboard_added = append_dashboard_items(dashboard_path, new_items)
+    seen.update(item.identity for item in new_items)
+    save_state(state_path, seen)
+
     date = datetime.now(UTC).strftime("%Y-%m-%d")
     subject = f"{len(new_items)} new European opportunity match(es) - {date}"
-    create_github_issue(subject, body)
+    try:
+        create_github_issue(subject, body)
+    except requests.RequestException as exc:
+        print(f"warning: GitHub issue alert failed: {exc}", file=sys.stderr)
     try:
         send_email(subject, body)
     except (OSError, smtplib.SMTPException) as exc:
         print(f"warning: email alert failed: {exc}", file=sys.stderr)
-    seen.update(item.identity for item in new_items)
-    save_state(state_path, seen)
+
+    print(f"Dashboard added {dashboard_added} record(s); deduplication state updated.")
     return 0
 
 
@@ -439,9 +454,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Find relevant European training, project, youth and research opportunities.")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--state", type=Path, default=DEFAULT_STATE)
+    parser.add_argument("--dashboard-data", type=Path, default=DEFAULT_DASHBOARD_DATA)
     parser.add_argument("--dry-run", action="store_true", help="print matches without alerting or changing state")
     args = parser.parse_args()
-    return run(args.config, args.state, args.dry_run)
+    return run(args.config, args.state, args.dashboard_data, args.dry_run)
 
 
 if __name__ == "__main__":
