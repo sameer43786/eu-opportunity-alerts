@@ -18,7 +18,8 @@ Every day, the workflow:
 7. removes already-seen links;
 8. publishes deduplicated, deadline-qualified matches directly into `docs/data/opportunities.json`;
 9. creates a GitHub Issue for new matches and optionally sends the same alert by email;
-10. commits monitor state plus dashboard data, then the Pages workflow republishes the public dashboard after the monitor completes.
+10. records a `last_scan_at` heartbeat even when zero new opportunities are found, so the dashboard shows that monitoring is active;
+11. commits monitor state plus dashboard data, then the Pages workflow republishes the public dashboard after the monitor completes.
 
 Initial sources cover the SALTO European Training Calendar, EURAXESS, the European Youth Portal, and the European Commission Funding & Tenders pages. All source domains and queries are editable.
 
