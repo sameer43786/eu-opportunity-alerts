@@ -240,12 +240,16 @@ async function init(){
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const data=await res.json();
     records=data.opportunities||[];
-    let syncText=data.updated_at || "unknown";
-    if(data.updated_at){
-      const syncDate=new Date(data.updated_at);
-      if(!Number.isNaN(syncDate.getTime())) syncText=syncDate.toLocaleString();
-    }
-    $("#lastSync").textContent=`Monitor data updated: ${syncText} · ${records.length} tracked records`;
+    const formatSync=(raw)=>{
+      if(!raw) return "unknown";
+      const d=new Date(raw);
+      return Number.isNaN(d.getTime()) ? raw : d.toLocaleString();
+    };
+    const scanText=formatSync(data.last_scan_at || data.updated_at);
+    const dataText=formatSync(data.updated_at);
+    const scanMatches=Number.isInteger(data.last_scan_matches) ? " · "+data.last_scan_matches+" match(es) in last scan" : "";
+    const scanAdded=Number.isInteger(data.last_scan_dashboard_added) ? " · "+data.last_scan_dashboard_added+" added" : "";
+    $("#lastSync").textContent="Last successful scan: "+scanText+scanMatches+scanAdded+" · Opportunity data last changed: "+dataText+" · "+records.length+" tracked records";
     render();
   }catch(e){
     $("#lastSync").textContent="Could not load dashboard data. Refresh or check the repository data file.";
