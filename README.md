@@ -11,12 +11,14 @@ Every day, the workflow:
 
 1. searches Europe-focused official opportunity sources through public search RSS results;
 2. retrieves each result page;
-3. scores transparent eligibility, audience, topic and activity terms from `config.yaml`;
+3. scores transparent eligibility, audience, topic, activity and funding/support terms from `config.yaml`;
 4. rejects explicit age-restricted calls by default;
-5. labels age eligibility as `explicitly no limit`, `not stated`, or `explicit limit detected`;
-6. removes already-seen links;
-7. creates a GitHub Issue for new matches;
-8. optionally sends the same alert by email.
+5. requires funding/support evidence such as a stipend, grant, travel support, reimbursement, paid participation or covered costs;
+6. extracts a future application deadline or a defensible rolling-open status when the official page states one;
+7. removes already-seen links;
+8. publishes deduplicated, deadline-qualified matches directly into `docs/data/opportunities.json`;
+9. creates a GitHub Issue for new matches and optionally sends the same alert by email;
+10. commits monitor state plus dashboard data, then the Pages workflow republishes the public dashboard after the monitor completes.
 
 Initial sources cover the SALTO European Training Calendar, EURAXESS, the European Youth Portal, and the European Commission Funding & Tenders pages. All source domains and queries are editable.
 
@@ -60,7 +62,7 @@ permissions:
   issues: write
 ```
 
-These permissions allow it to create alerts and commit only `data/seen.json` for deduplication. If organisation policy restricts workflow tokens, open:
+These permissions allow it to create alerts and commit `data/seen.json` plus `docs/data/opportunities.json`. The dashboard deployment workflow runs after a successful monitor completion so GitHub Pages receives Action-generated data commits. If organisation policy restricts workflow tokens, open:
 
 `Settings → Actions → General → Workflow permissions`
 
@@ -133,6 +135,8 @@ python -m unittest discover -s tests -v
 - Sites may change markup, block automated retrieval, publish incomplete snippets or state eligibility only in attachments.
 - Search-source errors are isolated so one failing source does not stop the others.
 - The script uses a descriptive user agent, conservative delays and bounded result counts.
+- Automated dashboard entries are labelled `AUTO-SCREENED`; they pass topic, audience, funding/support and deadline/rolling checks but still require human verification of exact funding and personal eligibility.
+- Matches without a confidently extracted future deadline or rolling-open statement can still alert but are not automatically added to the public dashboard.
 - Confirm every application on the official page. Do not rely solely on inferred age, deadline, funding, residence or professional eligibility.
 
 ## License
