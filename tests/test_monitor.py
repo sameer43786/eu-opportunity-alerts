@@ -50,6 +50,35 @@ class MonitorTests(unittest.TestCase):
             monitor.save_state(path, {"abc", "xyz"})
             self.assertEqual(monitor.load_state(path), {"abc", "xyz"})
 
+    def test_extracts_future_named_deadline(self):
+        text = "Applications are open. Application deadline: 30 September 2099."
+        self.assertEqual(monitor.extract_deadline(text), "2099-09-30")
+
+    def test_extracts_rolling_status(self):
+        text = "Applications are accepted on a rolling basis with no fixed deadline."
+        self.assertEqual(monitor.extract_deadline(text), "Rolling; no fixed deadline stated")
+
+    def test_dashboard_append_is_deduplicated(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "opportunities.json"
+            path.write_text(
+                '{"watch_title":"Test","updated_at":null,"source":"test","opportunities":[]}\n',
+                encoding="utf-8",
+            )
+            item = self.item("Funded cybersecurity training course for researchers.")
+            item.deadline = "2099-09-30"
+            item.funding_evidence = ["stipend", "travel support"]
+            item.score = 14
+            item.matches = {"funding_support": ["stipend", "travel support"]}
+
+            self.assertEqual(monitor.append_dashboard_items(path, [item]), 1)
+            self.assertEqual(monitor.append_dashboard_items(path, [item]), 0)
+            data = monitor.load_dashboard_data(path)
+            self.assertEqual(len(data["opportunities"]), 1)
+            self.assertEqual(data["opportunities"][0]["canonical_url"], item.url)
+            self.assertIsNotNone(data["updated_at"])
+
+
 
 if __name__ == "__main__":
     unittest.main()
