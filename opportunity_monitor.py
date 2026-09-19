@@ -288,6 +288,89 @@ def render_markdown(items: list[Opportunity]) -> str:
     return "\n".join(lines)
 
 
+def load_dashboard_data(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {
+            "watch_title": "Funded, Paid & Strategic ICT/STEM Opportunity Watch",
+            "updated_at": None,
+            "source": "Automated monitor plus curated opportunity ledger",
+            "opportunities": [],
+        }
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or not isinstance(data.get("opportunities"), list):
+        raise ValueError(f"Unexpected dashboard data structure in {path}")
+    return data
+
+
+def dashboard_record(item: Opportunity) -> dict[str, Any]:
+    now = datetime.now(UTC).isoformat()
+    funding_terms = ", ".join(item.funding_evidence[:8])
+    return {
+        "host": item.source,
+        "program_family": item.source,
+        "cycle": "Automated monitor",
+        "title": item.title,
+        "deadline": item.deadline,
+        "programme_dates": "See official call",
+        "location_format": "See official call",
+        "funding_stream": "Official-source automated screening",
+        "funding_label": "Funding/support detected",
+        "funding": (
+            f"Funding/support evidence detected on the official source: {funding_terms}. "
+            "Verify the exact amount, coverage, reimbursement conditions and applicant eligibility before applying."
+        ),
+        "eligibility": (
+            "Automated screening passed audience/opportunity, ICT/STEM topic, funding/support and age-limit filters. "
+            "Final personal eligibility is not assessed automatically."
+        ),
+        "age_rule": f"Automated age screen: {item.age_status}. Verify the official eligibility section.",
+        "verification_status": (
+            "AUTO-SCREENED: official-source result passed topic, audience, funding/support and deadline/rolling checks. "
+            "Human verification of final eligibility and funding terms remains required."
+        ),
+        "personal_eligibility_check": "NOT ASSESSED automatically",
+        "canonical_url": item.url,
+        "application_url": item.url,
+        "reported_at": now,
+        "published_at": now,
+        "source_published_at": item.published,
+        "automation_source": item.source,
+        "match_score": item.score,
+        "match_terms": item.matches,
+    }
+
+
+def append_dashboard_items(path: Path, items: list[Opportunity]) -> int:
+    """Append deduplicated matches only when deadline/rolling evidence is available."""
+    publishable = [item for item in items if item.deadline]
+    if not publishable:
+        return 0
+
+    data = load_dashboard_data(path)
+    existing = {
+        normalize_url(str(record.get("canonical_url", "")))
+        for record in data["opportunities"]
+        if record.get("canonical_url")
+    }
+    additions = []
+    for item in publishable:
+        key = normalize_url(item.url)
+        if key in existing:
+            continue
+        additions.append(dashboard_record(item))
+        existing.add(key)
+
+    if not additions:
+        return 0
+
+    data["opportunities"].extend(additions)
+    data["updated_at"] = datetime.now(UTC).isoformat()
+    data["source"] = "Curated ledger plus automated official-source screening"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return len(additions)
+
+
 def create_github_issue(title: str, body: str) -> None:
     token, repository = os.getenv("GITHUB_TOKEN"), os.getenv("GITHUB_REPOSITORY")
     if not token or not repository:
